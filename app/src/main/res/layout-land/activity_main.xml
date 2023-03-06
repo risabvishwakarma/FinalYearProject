@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FCFFFD"
+    android:backgroundTint="#82EF5B"
+
+    android:backgroundTintMode="multiply"
+    tools:context=".MainActivity">
+
+
+    <!--    <ImageView-->
+    <!--       />-->
+
+    <LinearLayout
+        android:id="@+id/hori"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageView">
+
+        <ImageButton
+            android:id="@+id/upload"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+
+            android:background="#00FFC107"
+
+            android:backgroundTint="#1BF124"
+            android:foregroundTint="#FFC107"
+            android:text="Description"
+            android:textColor="#FBFBFB"
+            app:srcCompat="@drawable/ic_baseline_description_24" />
+
+        <ImageButton
+            android:id="@+id/btnCamera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_weight="1"
+            android:background="#00FFFFFF"
+            android:backgroundTint="#1BF124"
+            android:text="Click Image"
+            app:srcCompat="@drawable/ic_baseline_camera_alt_24"
+            tools:ignore="UsingOnClickInXml" />
+
+        <ImageButton
+            android:id="@+id/btnCamera2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#00FFFFFF"
+            android:backgroundTint="#1BF124"
+            android:text="Gallery"
+            app:srcCompat="@drawable/ic_baseline_add_photo_alternate_24"
+            tools:ignore="UsingOnClickInXml" />
+    </LinearLayout>
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/imageView"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        
+
+
+        android:layout_marginStart="40dp"
+        android:cropToPadding="true"
+
+        android:orientation="horizontal"
+        android:scaleType="fitCenter"
+        app:barrierMargin="25dp"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:riv_border_color="#333333"
+
+
+        app:riv_corner_radius="5dip"
+        app:riv_mutate_background="false"
+        app:riv_oval="true"
+        app:riv_tile_mode="clamp"
+        tools:src="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/diseasename"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No Leaf Detected"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textColor="#195902"
+        android:textColorHint="#ECDDDD"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/hori"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/hori"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/diseasename" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
