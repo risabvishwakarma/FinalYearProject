@@ -6,7 +6,9 @@ import static androidx.core.content.FileProvider.getUriForFile;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ClipData;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -20,6 +22,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -85,6 +88,7 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
     Location currLocation = null;
     String currentPhotoPath;
     String TAG = "MAIN_ACTI";
+    FusedLocationProviderClient fusedLocationClient=null;
 
 
     ActivityResultLauncher<Intent> mGallery = null;
@@ -129,8 +133,10 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
 
                         Toast.makeText(getApplicationContext(), "Not Granted", Toast.LENGTH_SHORT).show();
                     }
-            getLocation();
 
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//                getLocation();
+//            }
 
 
 
@@ -158,6 +164,8 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
         );
 
     }
+
+
 
     @Override
     protected void onStart() {
@@ -189,6 +197,10 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
             f.delete();
 
         }
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            getLocation();
+        }
+
         Log.d(TAG, "OnSTART" + getApplicationContext());
 
     }
@@ -215,12 +227,14 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
     @Override
     protected void onPause() {
         super.onPause();
+        fusedLocationClient.flushLocations();
         Log.d(TAG, "OnPAUSE");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+
         Log.d(TAG, "OnRESUME");
     }
 
@@ -253,17 +267,50 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
 
 
 
-        FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+      fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
                 ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return ;
         }
+
         fusedLocationClient.getLastLocation()
                 .addOnSuccessListener(this, new OnSuccessListener<Location>() {
                     @SuppressLint("SetTextI18n")
                     @Override
                     public void onSuccess(Location location) {
-                        if (location != null) setCurrent_location(location.getLatitude(), location.getLongitude());
+                       // startLockTask();
+                        if (location == null) {
+
+
+                                AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
+
+
+                                alertDialog.setTitle("GPS is not Enabled!");
+
+                                alertDialog.setMessage("Do you want to turn on GPS?");
+
+
+                                alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                                        MainActivity.this.startActivity(intent);
+                                    }
+                                });
+
+
+                                alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.cancel();
+                                    }
+                                });
+                                alertDialog.show();
+
+
+                        }else
+                       // stopLockTask();
+                        setCurrent_location(location.getLatitude(), location.getLongitude());
+
+                        Log.d(TAG,"fire");
 
 
 
