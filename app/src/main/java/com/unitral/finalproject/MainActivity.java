@@ -125,19 +125,12 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
                         //Toast.makeText(getApplicationContext(), fineLocationGranted.toString(), Toast.LENGTH_SHORT).show();
                     } else if (coarseLocationGranted != null && coarseLocationGranted) {
 
-                        // Only approximate location access granted.
-
                     } else {
 
                         // No location access granted.
 
                         Toast.makeText(getApplicationContext(), "Not Granted", Toast.LENGTH_SHORT).show();
                     }
-
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-//                getLocation();
-//            }
-
 
 
                 }
@@ -197,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
             f.delete();
 
         }
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             getLocation();
         }
 
@@ -265,8 +258,6 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void getLocation() {
 
-
-
       fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
                 ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -280,8 +271,6 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
                     public void onSuccess(Location location) {
                        // startLockTask();
                         if (location == null) {
-
-
                                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
 
 
@@ -303,14 +292,14 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
                                         dialog.cancel();
                                     }
                                 });
+
                                 alertDialog.show();
 
 
                         }else
-                       // stopLockTask();
+
                         setCurrent_location(location.getLatitude(), location.getLongitude());
 
-                        Log.d(TAG,"fire");
 
 
 
@@ -320,9 +309,8 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
 
     }
 
+    @SuppressLint("SetTextI18n")
     private void setCurrent_location(double Latitude, double Longitude) {
-        Toast.makeText(getApplicationContext(), ""+Latitude, Toast.LENGTH_SHORT).show();
-
         Geocoder geocoder;
         List<Address> addresses;
         geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
@@ -332,13 +320,12 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
             addresses = geocoder.getFromLocation(Latitude, Longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
             String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
             String city = addresses.get(0).getLocality();
+            String division=addresses.get(0).getSubAdminArea();
             String state = addresses.get(0).getAdminArea();
             String country = addresses.get(0).getCountryName();
 
-            //   current_location=  new com.unitral.finalproject.location.Location(address, city, state, country);
-            assert binding.location != null;
-            binding.location.setText(city + "," + state + "," + country);
-            //Toast.makeText(getApplicationContext(), city+","+state+","+country, Toast.LENGTH_LONG).show();
+            binding.location.setText(city +","+division+ "," + state + "," + country);
+
         } catch (IOException ignored) {
         }
 
@@ -352,7 +339,7 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
             int dim = Math.abs(maxdimention - mindimention) / 2;
             bitmap = Bitmap.createBitmap(bitmap, bitmap.getHeight() < bitmap.getWidth() ? dim : 0, bitmap.getHeight() > bitmap.getWidth() ? dim : 0, mindimention, mindimention);
             imageView.setImageBitmap(bitmap);
-            //  bitmap = ;
+
             model.setBitmap(bitmap);
             diseaseName.setText(model.Object_Detection());
 
