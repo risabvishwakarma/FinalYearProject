@@ -54,21 +54,14 @@ import com.unitral.finalproject.databinding.ActivityMainBinding;
 import com.unitral.finalproject.image_uri.Image_Uri;
 
 
-import com.unitral.finalproject.ml.ModelUnquant;
-import com.unitral.finalproject.ml.ModelUnquant17;
-import com.unitral.finalproject.ml.ModelUnquant2718;
-import com.unitral.finalproject.ml.ModelUnquant917;
+
 import com.unitral.finalproject.model.Ml_Models;
 
-import org.tensorflow.lite.DataType;
-import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
+
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
