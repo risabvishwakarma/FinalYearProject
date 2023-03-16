@@ -324,7 +324,7 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
             String state = addresses.get(0).getAdminArea();
             String country = addresses.get(0).getCountryName();
 
-            binding.location.setText(city +"," + state);
+            //binding.location.setText(city +"," + state);
 
         } catch (IOException ignored) {
         }
