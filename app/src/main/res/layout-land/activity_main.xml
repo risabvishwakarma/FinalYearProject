@@ -68,27 +68,27 @@
         android:id="@+id/imageView"
         android:layout_width="250dp"
         android:layout_height="250dp"
-        
 
 
         android:layout_marginStart="40dp"
-        android:cropToPadding="true"
+        android:background="#FFE597"
 
+        android:cropToPadding="true"
         android:orientation="horizontal"
         android:scaleType="fitCenter"
+
         app:barrierMargin="25dp"
 
         app:layout_constraintBottom_toBottomOf="parent"
-
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:riv_border_color="#FFCF40"
-        android:background="#FFE597"
-
+        app:riv_border_width="2dip"
 
         app:riv_corner_radius="5dip"
-        app:riv_mutate_background="false"
+        app:riv_mutate_background="true"
         app:riv_oval="true"
+
         app:riv_tile_mode="clamp"
         tools:src="@tools:sample/avatars" />
 

@@ -1,13 +1,8 @@
 package com.unitral.finalproject;
 
-import static android.content.ContentValues.TAG;
-import static androidx.core.content.FileProvider.getUriForFile;
-
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.ClipData;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -20,7 +15,6 @@ import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.util.Log;
@@ -31,48 +25,31 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.FileProvider;
-
-//import com.unitral.finalproject.databinding.ActivityMainBinding;
-//import com.unitral.finalproject.ml.ModelUnquant;
-//import com.unitral.finalproject.ml.ModelUnquant17;
-//import com.unitral.finalproject.ml.ModelUnquant2718;
-//import com.unitral.finalproject.ml.ModelUnquant917;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.unitral.finalproject.databinding.ActivityMainBinding;
 import com.unitral.finalproject.image_uri.Image_Uri;
-
-
-
 import com.unitral.finalproject.model.Ml_Models;
-
-
 
 import java.io.File;
 import java.io.IOException;
-
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements Button.OnClickListener {
     private static final int PICK_IMAGE = 1999;
+    static String imageUri = "";
     int REQUEST_IMAGE_CAPTURE = 1004;
     ImageButton buttonCamera, buttonGallery, buttonUpload;
     ImageView imageView;
-    static String imageUri = "";
     TextView diseaseName;
     boolean imageViewHaveImage = false;
     ActivityMainBinding binding;
@@ -81,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
     Location currLocation = null;
     String currentPhotoPath;
     String TAG = "MAIN_ACTI";
-    FusedLocationProviderClient fusedLocationClient=null;
+    FusedLocationProviderClient fusedLocationClient = null;
 
 
     ActivityResultLauncher<Intent> mGallery = null;
@@ -150,7 +127,6 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
         );
 
     }
-
 
 
     @Override
@@ -251,10 +227,10 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void getLocation() {
 
-      fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
                 ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return ;
+            return;
         }
 
         fusedLocationClient.getLastLocation()
@@ -262,38 +238,36 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
                     @SuppressLint("SetTextI18n")
                     @Override
                     public void onSuccess(Location location) {
-                       // startLockTask();
+                        // startLockTask();
                         if (location == null) {
-                                AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
+                            AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
 
 
-                                alertDialog.setTitle("GPS is not Enabled!");
+                            alertDialog.setTitle("GPS is not Enabled!");
 
-                                alertDialog.setMessage("Do you want to turn on GPS?");
-
-
-                                alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                                        MainActivity.this.startActivity(intent);
-                                    }
-                                });
+                            alertDialog.setMessage("Do you want to turn on GPS?");
 
 
-                                alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.cancel();
-                                    }
-                                });
-
-                                alertDialog.show();
-
-
-                        }else
-
-                        setCurrent_location(location.getLatitude(), location.getLongitude());
+                            alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                                    MainActivity.this.startActivity(intent);
+                                }
+                            });
 
 
+                            alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+
+                            alertDialog.show();
+
+
+                        } else
+
+                            setCurrent_location(location.getLatitude(), location.getLongitude());
 
 
                     }
@@ -313,11 +287,11 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
             addresses = geocoder.getFromLocation(Latitude, Longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
             String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
             String city = addresses.get(0).getLocality();
-            String division=addresses.get(0).getSubAdminArea();
+            String division = addresses.get(0).getSubAdminArea();
             String state = addresses.get(0).getAdminArea();
             String country = addresses.get(0).getCountryName();
 
-            binding.location.setText(city +"," + state);
+            binding.location.setText(city + "," + state);
 
         } catch (IOException ignored) {
         }
@@ -350,7 +324,7 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
         switch (view.getId()) {
             case R.id.btnCamera: {
 
-                startActivity(new Intent(MainActivity.this, MainActivity2.class));
+                startActivity(new Intent(MainActivity.this, CameraActivity.class));
                 break;
             }
             case R.id.btnCamera2: {

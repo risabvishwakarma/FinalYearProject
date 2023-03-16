@@ -1,12 +1,25 @@
 package com.unitral.finalproject;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.ContentValues;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.media.ThumbnailUtils;
+import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.util.Log;
+import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-
-import com.unitral.finalproject.databinding.ActivityCameraBinding;
-import com.unitral.finalproject.image_uri.Image_Uri;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.camera.core.Camera;
 import androidx.camera.core.CameraSelector;
@@ -25,25 +38,9 @@ import androidx.camera.view.PreviewView;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LifecycleOwner;
 
-import android.Manifest;
-import android.annotation.SuppressLint;
-import android.content.ContentValues;
-import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.media.ThumbnailUtils;
-import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.util.Log;
-import android.view.MotionEvent;
-import android.view.ScaleGestureDetector;
-import android.view.View;
-import android.widget.ImageButton;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.google.common.util.concurrent.ListenableFuture;
 import com.unitral.finalproject.databinding.ActivityCameraBinding;
+import com.unitral.finalproject.image_uri.Image_Uri;
 import com.unitral.finalproject.model.Ml_Models;
 
 import java.io.File;
@@ -51,6 +48,8 @@ import java.util.concurrent.Executors;
 
 
 public class CameraActivity extends AppCompatActivity implements View.OnClickListener {
+    final int Time_Limit_For_Camera_Flip_in_ms = 300;
+    private final String TAG = "MAIN_2";
     ActivityCameraBinding cameraBinding;
     ImageButton button, flash;
     TextView logtext;
@@ -64,8 +63,7 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
     String current;
     Camera cam1;
     long CF_Last_Tuch = 0;
-    private final String TAG = "MAIN_2";
-    final int Time_Limit_For_Camera_Flip_in_ms = 300;
+
     @SuppressLint({"MissingInflatedId", "ClickableViewAccessibility"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,7 +98,7 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
 
         imageAnalysis = new ImageAnalysis.Builder()
                 .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST).build();
-       Executors.newSingleThreadExecutor();
+        Executors.newSingleThreadExecutor();
 
     }
 

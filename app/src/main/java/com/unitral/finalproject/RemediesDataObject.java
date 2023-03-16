@@ -2,6 +2,17 @@ package com.unitral.finalproject;
 
 
 public class RemediesDataObject {
+    private String Disease, Causes, Remedies;
+
+    public RemediesDataObject(String disease, String causes, String remedies) {
+        Disease = disease;
+        Causes = causes;
+        Remedies = remedies;
+    }
+
+    public RemediesDataObject() {
+    }
+
     public String getDisease() {
         return Disease;
     }
@@ -25,12 +36,4 @@ public class RemediesDataObject {
     public void setRemedies(String remedies) {
         Remedies = remedies;
     }
-
-    public RemediesDataObject(String disease, String causes, String remedies) {
-        Disease = disease;
-        Causes = causes;
-        Remedies = remedies;
-    }
-    public RemediesDataObject(){}
-   private String Disease,Causes,Remedies;
 }
