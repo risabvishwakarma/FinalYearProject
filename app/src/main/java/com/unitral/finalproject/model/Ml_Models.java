@@ -3,18 +3,25 @@ package com.unitral.finalproject.model;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
+import com.unitral.finalproject.ml.ModelEffb1;
 import com.unitral.finalproject.ml.ModelUnquant;
 import com.unitral.finalproject.ml.ModelUnquant17;
 import com.unitral.finalproject.ml.ModelUnquant2718;
 import com.unitral.finalproject.ml.ModelUnquant917;
 
 import org.tensorflow.lite.DataType;
+import org.tensorflow.lite.support.image.TensorImage;
+import org.tensorflow.lite.support.label.Category;
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Ml_Models {
     private Bitmap imageBitmap;
@@ -57,6 +64,8 @@ public class Ml_Models {
             OBJECT_DETECTION =   outputFeature0.getFloatArray()[0] > CONFIDANTE?
                 Object_Recognation(imageBitmap):"Leaf is not detected";
 
+          Object_Recognation1(imageBitmap);
+
         } catch (Exception e) {
             Log.d(TAG, e.getMessage());
         } finally {
@@ -67,6 +76,38 @@ public class Ml_Models {
 
         }
         return OBJECT_DETECTION;
+    }
+    public void Object_Recognation1(Bitmap imageBitmap) {
+        ModelEffb1 model = null;
+        try {
+            model = ModelEffb1.newInstance(context);
+            TensorImage image = TensorImage.fromBitmap(imageBitmap);
+
+
+
+            // Runs model inference and gets result.
+            ModelEffb1.Outputs outputs = model.process(image);
+            @NonNull List<Category> outputFeature0 = outputs.getProbabilityAsCategoryList();
+           float d=.000000001f;
+            String Name="";
+
+            for( Category c:outputFeature0){
+                if(c.getScore()>d){d=c.getScore();Name=c.getLabel();}
+            }
+            Log.d("OUTPUT",outputFeature0.toString());
+
+            Log.d("OUTPUT", Name+" "+d);
+            Toast.makeText(context, Name, Toast.LENGTH_SHORT).show();
+
+        } catch (Exception e) {
+            Log.d(TAG, e.getMessage());
+        } finally {
+
+            model.close();
+
+            Log.d(TAG, "Detection Model Closed");
+
+        }
     }
 
     public String Object_Recognation(Bitmap imageBitmap) {
