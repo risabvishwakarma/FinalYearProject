@@ -2,6 +2,7 @@ package com.unitral.finalproject;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -13,17 +14,19 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.unitral.finalproject.image_uri.Image_Uri;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.BreakIterator;
 import java.util.ArrayList;
 import java.util.Random;
 
 public class ShowDiseases extends AppCompatActivity {
-    ArrayList<RemediesDataObject> list = new ArrayList<>();
-    TextView Disease, Causes, Remedies;
+    TextView Disease, Causes, Remedies,Symptoms,Description;
+    ImageView image;
     String value = "";
 
 
@@ -31,62 +34,29 @@ public class ShowDiseases extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_diseases);
-        int numr = new Random().nextInt(16 - 1 + 1) + 1;
+        image=findViewById(R.id.imageView2);
         Disease = (TextView) findViewById(R.id.DiseaseData);
         Causes = (TextView) findViewById(R.id.CausesData);
         Remedies = (TextView) findViewById(R.id.RemediesData);
+        Symptoms=(TextView) findViewById(R.id.SymptomsData);
+        Description=(TextView) findViewById(R.id.DescriptionData);
 
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             value = extras.getString("name");
-            Disease.setText(value);
+            image.setImageBitmap(Image_Uri.imageBitmap);
+            Log.d("ABCDE", value);
         }
-        //*************************************
-        RequestQueue queue = Volley.newRequestQueue(this);
-        final String url = "https://ap-south-1.aws.data.mongodb-api.com/app/application-0-zubdb/endpoint/remedies?secret=abcd1234";
-
-// Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        // Display the first 500 characters of the response string.
-
-                        JSONArray jsonArr;
-                        try {
-                            jsonArr = new JSONArray(response);
-                            Log.i("TAG", "Response is: " + jsonArr.length());
-
-                            for (int i = 1; i < jsonArr.length(); i++) {
-
-                                JSONObject data = jsonArr.getJSONObject(i);
-                                if (numr == i) {
-                                    Causes.setText(data.getString("Causes"));
-                                    Remedies.setText(data.getString("Remedies"));
-                                    break;
-                                }
-                                list.add(new RemediesDataObject(data.getString("Disease"),
-                                        data.getString("Causes"), data.getString("Remedies")));
-
-                            }
-
-                            Log.i("TAG", "Response is: " + list.size());
+                        try{
+                            JSONObject json = new JSONObject(value);
+                            Disease.setText(json.getString("name"));
+                            Causes.setText(json.getString("causes"));
+                            Remedies.setText(json.getString("remedies"));
+                            Description.setText(json.getString("details"));
+                            Symptoms.setText(json.getString("symptoms"));
                         } catch (JSONException e) {
-                            e.printStackTrace();
+                            throw new RuntimeException(e);
                         }
-
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.i("TAG", "That didn't work!");
-                Toast.makeText(ShowDiseases.this, "response.substring(0,50)", Toast.LENGTH_LONG).show();
-            }
-        });
-
-        queue.add(stringRequest);
-
-
     }
 }

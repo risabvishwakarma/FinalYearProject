@@ -1,12 +1,13 @@
 package com.unitral.finalproject.image_uri;
 
+import android.graphics.Bitmap;
 import android.net.Uri;
 
 import java.io.File;
 
 public class Image_Uri {
     private static File file = null;
-    private static final Uri imageUri = null;
+   public  static Bitmap imageBitmap = null;
 
     public static File getFile() {
         return file;
@@ -14,10 +15,16 @@ public class Image_Uri {
 
     public static void setFile(File file) {
         Image_Uri.file = file;
+
     }
 
-    public static Uri getImageUri() {
-        assert file != null;
-        return Uri.fromFile(file);
-    }
+//    public static Bitmap getImageUri() {
+//       // assert imageUri != null;
+//        return imageBitmap;
+//    }
+//    public static void setImageUri(Bitmap imageBitmap) {
+//
+//        this.imageBitmap=imageBitmap;
+//    }
+
 }

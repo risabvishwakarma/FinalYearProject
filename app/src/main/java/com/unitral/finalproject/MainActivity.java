@@ -57,6 +57,8 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
     Uri contentUri;
     Location currLocation = null;
     String currentPhotoPath;
+    Bitmap imageBitmap;
+    static String information;
     String TAG = "MAIN_ACTI";
     FusedLocationProviderClient fusedLocationClient = null;
 
@@ -66,6 +68,11 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
 
     String currentPath;
     Ml_Models model = null;
+
+    public static void giveData(String response) {
+        information=response;
+//        Log.d("ABCDE",response);
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
@@ -306,18 +313,24 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
             int dim = Math.abs(maxdimention - mindimention) / 2;
             bitmap = Bitmap.createBitmap(bitmap, bitmap.getHeight() < bitmap.getWidth() ? dim : 0, bitmap.getHeight() > bitmap.getWidth() ? dim : 0, mindimention, mindimention);
             imageView.setImageBitmap(bitmap);
-
+            Image_Uri.imageBitmap=bitmap;
             model.setBitmap(bitmap);
             diseaseName.setText(model.Object_Detection());
+//            Image_Uri.setImageUri(bitmap);
 
             imageViewHaveImage = !diseaseName.getText().toString().equals("Leaf is not detected");
+            if(imageViewHaveImage && !diseaseName.getText().toString().contains("healthy"))
+            {
+              GetData obj=  new GetData();
+              obj.call(diseaseName.getText().toString().split(":")[0].trim(),getApplicationContext());
+            }
 
-            Log.d(TAG, diseaseName.getText().toString());
+           // Log.d(TAG, diseaseName.getText().toString());
         }
     }
 
 
-    @SuppressLint("NonConstantResourceId")
+    @SuppressLint({"NonConstantResourceId", "SuspiciousIndentation"})
     @Override
     public void onClick(View view) {
 
@@ -332,8 +345,14 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
                 break;
             }
             case R.id.upload: {
-                if (imageViewHaveImage)
-                    startActivity(new Intent(MainActivity.this, ShowDiseases.class).putExtra("name", diseaseName.getText()));
+                if (imageViewHaveImage && information!=null){
+                  Intent i=  new Intent(MainActivity.this, ShowDiseases.class);
+                  i.putExtra("name",information);
+
+                    startActivity(i);}
+                else if(information==null && imageViewHaveImage ){
+                    if(!diseaseName.getText().toString().contains("healthy"))
+                    Toast.makeText(getApplicationContext(), "Don't Have Knowledge", Toast.LENGTH_SHORT).show();}
                 else
                     Toast.makeText(getApplicationContext(), "Leaf is not detected.", Toast.LENGTH_SHORT).show();
                 break;

@@ -42,9 +42,7 @@ public class Ml_Models {
         this.imageBitmap = bitmap;
     }
 
-    // other instance variables can be here
 
-    // private Ml_Models() {};
 
     public String Object_Detection() {
         ModelUnquant model = null;
@@ -114,16 +112,16 @@ public class Ml_Models {
                         .max(Comparator.comparing(Category::getScore)).orElse(null);
             }
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                outputFeature0.forEach(category1 -> Log.d(TAG, category1.getScore() * 100 + " : " + category1.getLabel()));
-            }
-
-            Log.d(TAG, outputFeature0.toString());
-            Disease = (null == category ? "Leaf isn't Dectected" : category.getLabel() + " : " + category.getScore() * 100);
-            if (category != null) {
-                Log.d("OUTPUT", category.getLabel() + " " + category.getScore());
-                //  Toast.makeText(context, category.getLabel(), Toast.LENGTH_SHORT).show();
-            }
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//                outputFeature0.forEach(category1 -> Log.d(TAG, category1.getScore() * 100 + " : " + category1.getLabel()));
+//            }
+//            Log.d(TAG, outputFeature0.toString());
+//
+            Disease = (null == category ? "Leaf isn't Detected" : category.getLabel() + " : " + (int)(category.getScore() * 100)+"%");
+//            if (category != null) {
+//                Log.d("OUTPUT", category.getLabel() + " " + category.getScore());
+//                //  Toast.makeText(context, category.getLabel(), Toast.LENGTH_SHORT).show();
+//            }
 
         } catch (Exception e) {
             Log.i(TAG, e.getMessage());

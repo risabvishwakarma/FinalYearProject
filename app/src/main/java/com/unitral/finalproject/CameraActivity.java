@@ -49,7 +49,7 @@ import java.util.concurrent.Executors;
 
 public class CameraActivity extends AppCompatActivity implements View.OnClickListener {
     final int Time_Limit_For_Camera_Flip_in_ms = 300;
-    private final String TAG = "MAIN_2";
+    private final String TAG = "CAMERA";
     ActivityCameraBinding cameraBinding;
     ImageButton button, flash;
     TextView logtext;
