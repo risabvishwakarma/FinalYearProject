@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
     String currentPhotoPath;
     Bitmap imageBitmap;
     static String information;
-    ProgressBar progressBar;
+    ProgressBar progressBar=null;
     String TAG = "MAIN_ACTI";
     FusedLocationProviderClient fusedLocationClient = null;
 
@@ -74,7 +74,6 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
     public static void giveData(String response) {
         information=response;
 
-//        Log.d("ABCDE",response);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
@@ -87,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
         model = new Ml_Models(getApplicationContext());
 
         setContentView(binding.getRoot());
-
+        progressBar=binding.progressBar;
         imageView = (ImageView) findViewById(R.id.imageView);
         diseaseName = (TextView) findViewById(R.id.diseasename);
         imageView.setOnClickListener(this);
@@ -326,11 +325,11 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
             imageViewHaveImage = !diseaseName.getText().toString().equals("Leaf is not detected");
             if(imageViewHaveImage && !diseaseName.getText().toString().contains("healthy"))
             {
-
+                if(progressBar!=null)
                 binding.progressBar.setVisibility(View.VISIBLE);
                 binding.upload.setVisibility(View.GONE);
 
-              GetData obj=  new GetData(binding.progressBar,binding.upload);
+              GetData obj=  new GetData(progressBar,binding.upload);
               obj.call(diseaseName.getText().toString().split(":")[0].trim(),getApplicationContext());
             }
 
