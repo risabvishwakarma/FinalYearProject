@@ -22,6 +22,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -59,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
     String currentPhotoPath;
     Bitmap imageBitmap;
     static String information;
+    ProgressBar progressBar;
     String TAG = "MAIN_ACTI";
     FusedLocationProviderClient fusedLocationClient = null;
 
@@ -71,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
 
     public static void giveData(String response) {
         information=response;
+
 //        Log.d("ABCDE",response);
     }
 
@@ -84,12 +87,14 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
         model = new Ml_Models(getApplicationContext());
 
         setContentView(binding.getRoot());
+
         imageView = (ImageView) findViewById(R.id.imageView);
         diseaseName = (TextView) findViewById(R.id.diseasename);
         imageView.setOnClickListener(this);
         findViewById(R.id.btnCamera).setOnClickListener(this);
         findViewById(R.id.btnCamera2).setOnClickListener(this);
         findViewById(R.id.upload).setOnClickListener(this);
+
 
         //location
         ActivityResultLauncher<String[]> locationPermissionRequest = registerForActivityResult(new ActivityResultContracts
@@ -321,7 +326,11 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
             imageViewHaveImage = !diseaseName.getText().toString().equals("Leaf is not detected");
             if(imageViewHaveImage && !diseaseName.getText().toString().contains("healthy"))
             {
-              GetData obj=  new GetData();
+
+                binding.progressBar.setVisibility(View.VISIBLE);
+                binding.upload.setVisibility(View.GONE);
+
+              GetData obj=  new GetData(binding.progressBar,binding.upload);
               obj.call(diseaseName.getText().toString().split(":")[0].trim(),getApplicationContext());
             }
 
@@ -346,15 +355,14 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
             }
             case R.id.upload: {
                 if (imageViewHaveImage && information!=null){
+
                   Intent i=  new Intent(MainActivity.this, ShowDiseases.class);
                   i.putExtra("name",information);
-
                     startActivity(i);}
                 else if(information==null && imageViewHaveImage ){
                     if(!diseaseName.getText().toString().contains("healthy"))
-                    Toast.makeText(getApplicationContext(), "Don't Have Knowledge", Toast.LENGTH_SHORT).show();}
-                else
-                    Toast.makeText(getApplicationContext(), "Leaf is not detected.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "loading...", Toast.LENGTH_SHORT).show();}
+
                 break;
             }
             case R.id.imageView: {
