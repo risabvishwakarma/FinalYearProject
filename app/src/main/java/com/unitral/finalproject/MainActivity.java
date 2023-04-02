@@ -309,6 +309,7 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
 
     }
 
+    @SuppressLint("SuspiciousIndentation")
     private void setImageWithUri(Bitmap bitmap) throws IOException {
         imageViewHaveImage = true;
         if (null != bitmap) {
@@ -322,15 +323,15 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
             diseaseName.setText(model.Object_Detection());
 //            Image_Uri.setImageUri(bitmap);
 
-            imageViewHaveImage = !diseaseName.getText().toString().equals("Leaf is not detected");
+            imageViewHaveImage= !diseaseName.getText().toString().equals("Leaf is not detected") && !diseaseName.getText().toString().contains("healthy");
+
             if(imageViewHaveImage && !diseaseName.getText().toString().contains("healthy"))
             {
-                if(progressBar!=null)
+
                 binding.progressBar.setVisibility(View.VISIBLE);
                 binding.upload.setVisibility(View.GONE);
 
-              GetData obj=  new GetData(progressBar,binding.upload);
-              obj.call(diseaseName.getText().toString().split(":")[0].trim(),getApplicationContext());
+              new GetData(progressBar,binding.upload).call(diseaseName.getText().toString().split(":")[0].trim(),getApplicationContext());
             }
 
            // Log.d(TAG, diseaseName.getText().toString());
@@ -356,11 +357,16 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
                 if (imageViewHaveImage && information!=null){
 
                   Intent i=  new Intent(MainActivity.this, ShowDiseases.class);
-                  i.putExtra("name",information);
+                  i.putExtra("name",information);information=null;
                     startActivity(i);}
-                else if(information==null && imageViewHaveImage ){
-                    if(!diseaseName.getText().toString().contains("healthy"))
-                    Toast.makeText(getApplicationContext(), "loading...", Toast.LENGTH_SHORT).show();}
+                else if(information==null){
+
+                    Toast.makeText(getApplicationContext(), "loading...", Toast.LENGTH_SHORT).show();
+                    binding.progressBar.setVisibility(View.VISIBLE);
+                    binding.upload.setVisibility(View.GONE);
+
+                    new GetData(progressBar,binding.upload).call(diseaseName.getText().toString().split(":")[0].trim(),getApplicationContext());
+                }
 
                 break;
             }
