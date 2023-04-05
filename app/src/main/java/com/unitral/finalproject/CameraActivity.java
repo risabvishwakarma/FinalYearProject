@@ -170,8 +170,8 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if ((long) System.currentTimeMillis() - lastime > 2000) {
-                            lastime = (long) System.currentTimeMillis();
+                        if (System.currentTimeMillis() - lastime > 2000) {
+                            lastime = System.currentTimeMillis();
                             logtext.setText(setImageWithUri(bitmap));
                         }
 
@@ -209,7 +209,7 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
                 .setCaptureMode(ImageCapture.CAPTURE_MODE_MAXIMIZE_QUALITY)
                 .build();
 
-        cam1 = cameraProvider.bindToLifecycle((LifecycleOwner) this, cameraSelector, imageCapture, imageAnalysis, preview);
+        cam1 = cameraProvider.bindToLifecycle(this, cameraSelector, imageCapture, imageAnalysis, preview);
     }
 
     //for clicking the pick

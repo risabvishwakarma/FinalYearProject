@@ -35,11 +35,11 @@ public class ShowDiseases extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_diseases);
         image=findViewById(R.id.imageView2);
-        Disease = (TextView) findViewById(R.id.DiseaseData);
-        Causes = (TextView) findViewById(R.id.CausesData);
-        Remedies = (TextView) findViewById(R.id.RemediesData);
-        Symptoms=(TextView) findViewById(R.id.SymptomsData);
-        Description=(TextView) findViewById(R.id.DescriptionData);
+        Disease = findViewById(R.id.DiseaseData);
+        Causes = findViewById(R.id.CausesData);
+        Remedies = findViewById(R.id.RemediesData);
+        Symptoms= findViewById(R.id.SymptomsData);
+        Description= findViewById(R.id.DescriptionData);
 
 
         Bundle extras = getIntent().getExtras();

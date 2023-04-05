@@ -20,11 +20,14 @@ public class GetData {
 
     String result="";
     ProgressBar progressBar=null;
+    MainActivity MainActivityObject=null;
     ImageButton details;
     int time=3;
-    public GetData(ProgressBar pb, ImageButton upload){
+    public GetData(ProgressBar pb, ImageButton upload,MainActivity object){
         progressBar=pb;
         details=upload;
+        MainActivityObject=object;
+
     }
 
    public  void call(String disease,Context context){
@@ -38,7 +41,7 @@ public class GetData {
                     progressBar.setVisibility(View.GONE);
                     details.setVisibility(View.VISIBLE);
                     result=response;
-                    MainActivity.giveData(response);
+                    MainActivityObject.giveData(response);
 
                 }
             }, new Response.ErrorListener() {

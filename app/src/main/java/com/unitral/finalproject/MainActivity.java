@@ -17,6 +17,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.system.Os;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -71,8 +72,9 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
     String currentPath;
     Ml_Models model = null;
 
-    public static void giveData(String response) {
+    public void giveData(String response) {
         information=response;
+        DetailsButtonPressed();
 
     }
 
@@ -87,8 +89,8 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
 
         setContentView(binding.getRoot());
         progressBar=binding.progressBar;
-        imageView = (ImageView) findViewById(R.id.imageView);
-        diseaseName = (TextView) findViewById(R.id.diseasename);
+        imageView = findViewById(R.id.imageView);
+        diseaseName = findViewById(R.id.diseasename);
         imageView.setOnClickListener(this);
         findViewById(R.id.btnCamera).setOnClickListener(this);
         findViewById(R.id.btnCamera2).setOnClickListener(this);
@@ -322,19 +324,10 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
             model.setBitmap(bitmap);
             diseaseName.setText(model.Object_Detection());
 //            Image_Uri.setImageUri(bitmap);
-
+            information=null;
             imageViewHaveImage= !diseaseName.getText().toString().equals("Leaf is not detected") && !diseaseName.getText().toString().contains("healthy");
 
-            if(imageViewHaveImage && !diseaseName.getText().toString().contains("healthy"))
-            {
-
-                binding.progressBar.setVisibility(View.VISIBLE);
-                binding.upload.setVisibility(View.GONE);
-
-              new GetData(progressBar,binding.upload).call(diseaseName.getText().toString().split(":")[0].trim(),getApplicationContext());
-            }
-
-           // Log.d(TAG, diseaseName.getText().toString());
+            binding.upload.performClick();
         }
     }
 
@@ -351,23 +344,20 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
             }
             case R.id.btnCamera2: {
                 mGallery.launch(new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI));
+
                 break;
             }
             case R.id.upload: {
-                if (imageViewHaveImage && information!=null){
+                //Log.d("ABCDE",String.valueOf(imageViewHaveImage)+"  "+information);
+                if(imageViewHaveImage  && information==null){
 
-                  Intent i=  new Intent(MainActivity.this, ShowDiseases.class);
-                  i.putExtra("name",information);information=null;
-                    startActivity(i);}
-                else if(information==null){
-
-                    Toast.makeText(getApplicationContext(), "loading...", Toast.LENGTH_SHORT).show();
                     binding.progressBar.setVisibility(View.VISIBLE);
                     binding.upload.setVisibility(View.GONE);
 
-                    new GetData(progressBar,binding.upload).call(diseaseName.getText().toString().split(":")[0].trim(),getApplicationContext());
+                    new GetData(progressBar,binding.upload,this).call(diseaseName.getText().toString().split(":")[0].trim(),getApplicationContext());
+                }else if(imageViewHaveImage){
+                    DetailsButtonPressed();
                 }
-
                 break;
             }
             case R.id.imageView: {
@@ -379,5 +369,11 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
         }
 
     }
+     private void DetailsButtonPressed(){
 
+         if (imageViewHaveImage && information!=null){
+             Intent i=  new Intent(MainActivity.this, ShowDiseases.class);
+             i.putExtra("name",information);
+             startActivity(i);}
+     }
 }
