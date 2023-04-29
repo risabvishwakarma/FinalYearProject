@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#131313"
-    android:backgroundTint="#8FFB65"
+    android:background="#FFFFFF"
+
     android:weightSum="3"
     tools:context=".ShowDiseases">
     <ImageView

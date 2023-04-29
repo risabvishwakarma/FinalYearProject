@@ -323,9 +323,9 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
             Image_Uri.imageBitmap=bitmap;
             model.setBitmap(bitmap);
             diseaseName.setText(model.Object_Detection());
-//            Image_Uri.setImageUri(bitmap);
+
             information=null;
-            imageViewHaveImage= !diseaseName.getText().toString().equals("Leaf is not detected") && !diseaseName.getText().toString().contains("healthy");
+            imageViewHaveImage= !diseaseName.getText().toString().equals(String.valueOf(Prediction.NO_Leaf_Detected)) && !diseaseName.getText().toString().contains("healthy");
 
             binding.upload.performClick();
         }
@@ -348,9 +348,16 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
                 break;
             }
             case R.id.upload: {
-                //Log.d("ABCDE",String.valueOf(imageViewHaveImage)+"  "+information);
-                if(imageViewHaveImage  && information==null){
 
+                if(imageViewHaveImage  && information==null){
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            binding.progressBar.setVisibility(View.VISIBLE);
+                            binding.upload.setVisibility(View.GONE);
+
+                        }
+                    });
                     binding.progressBar.setVisibility(View.VISIBLE);
                     binding.upload.setVisibility(View.GONE);
 
@@ -375,5 +382,6 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
              Intent i=  new Intent(MainActivity.this, ShowDiseases.class);
              i.putExtra("name",information);
              startActivity(i);}
+
      }
 }

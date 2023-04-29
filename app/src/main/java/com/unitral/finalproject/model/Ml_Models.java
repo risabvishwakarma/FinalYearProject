@@ -7,6 +7,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.unitral.finalproject.Prediction;
 import com.unitral.finalproject.ml.ModelEffb1;
 import com.unitral.finalproject.ml.ModelUnquant;
 
@@ -54,16 +55,10 @@ public class Ml_Models {
             TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
 
             OBJECT_DETECTION = outputFeature0.getFloatArray()[0] > CONFIDANTE ?
-                    Object_Recognation() : "Leaf is not detected";
+                    Object_Recognation() : String.valueOf(Prediction.NO_Leaf_Detected);
 
         } catch (Exception e) {
-            // Log.d(TAG, e.getMessage());
-        } finally {
-
-            // model.close();
-
-            Log.d(TAG, "Detection Model Closed");
-
+             Log.d(TAG, e.getMessage());
         }
         return OBJECT_DETECTION;
     }
@@ -112,24 +107,12 @@ public class Ml_Models {
                         .max(Comparator.comparing(Category::getScore)).orElse(null);
             }
 
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-//                outputFeature0.forEach(category1 -> Log.d(TAG, category1.getScore() * 100 + " : " + category1.getLabel()));
-//            }
-//            Log.d(TAG, outputFeature0.toString());
-//
             Disease = (null == category ? "Leaf isn't Detected" : category.getLabel() + " : " + (int)(category.getScore() * 100)+"%");
-//            if (category != null) {
-//                Log.d("OUTPUT", category.getLabel() + " " + category.getScore());
-//                //  Toast.makeText(context, category.getLabel(), Toast.LENGTH_SHORT).show();
-//            }
+
 
         } catch (Exception e) {
             Log.i(TAG, e.getMessage());
 
-        } finally {
-//            assert model != null;
-//            model.close();
-//            Log.d(TAG, "Recognition Model Closed");
         }
 
         return Disease;

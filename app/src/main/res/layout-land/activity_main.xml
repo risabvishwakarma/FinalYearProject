@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FCFFFD"
-    android:backgroundTint="#82EF5B"
+
 
     android:backgroundTintMode="multiply"
     tools:context=".MainActivity">
@@ -84,7 +84,7 @@
 
 
         android:layout_marginStart="40dp"
-        android:background="#FFE597"
+        android:background="@drawable/imgic"
 
         android:cropToPadding="true"
         android:orientation="horizontal"
@@ -95,7 +95,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:riv_border_color="#FFCF40"
+        app:riv_border_color="#005C5339"
         app:riv_border_width="2dip"
 
         app:riv_corner_radius="5dip"

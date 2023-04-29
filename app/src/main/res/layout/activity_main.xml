@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
-    android:backgroundTint="#8FFB65"
+
 
     android:backgroundTintMode="multiply"
     tools:context=".MainActivity">
@@ -89,7 +89,8 @@
         android:layout_marginTop="50dp"
         android:layout_marginEnd="40dp"
         android:layout_marginBottom="40dp"
-        android:background="#FFE597"
+        android:background="@drawable/imgic"
+
 
         android:cropToPadding="true"
         android:scaleType="fitCenter"
@@ -100,7 +101,7 @@
 
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:riv_border_color="#FFCF40"
+        app:riv_border_color="#00040303"
         app:riv_border_width="2dip"
 
         app:riv_corner_radius="5dip"
@@ -109,7 +110,7 @@
 
         app:riv_tile_mode="clamp"
 
-        tools:src="@tools:sample/avatars" />
+        tools:src="@drawable/imgic" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline3"
