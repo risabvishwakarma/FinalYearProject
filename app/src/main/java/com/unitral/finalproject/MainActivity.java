@@ -247,43 +247,39 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
         }
 
         fusedLocationClient.getLastLocation()
-                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
-                    @SuppressLint("SetTextI18n")
-                    @Override
-                    public void onSuccess(Location location) {
-                        // startLockTask();
-                        if (location == null) {
-                            AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
+                .addOnSuccessListener(this, location -> {
+                    // startLockTask();
+                    if (location == null) {
+                        AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
 
 
-                            alertDialog.setTitle("GPS is not Enabled!");
+                        alertDialog.setTitle("GPS is not Enabled!");
 
-                            alertDialog.setMessage("Do you want to turn on GPS?");
-
-
-                            alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                                    MainActivity.this.startActivity(intent);
-                                }
-                            });
+                        alertDialog.setMessage("Do you want to turn on GPS?");
 
 
-                            alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.cancel();
-                                }
-                            });
-
-                            alertDialog.show();
-
-
-                        } else
-
-                            setCurrent_location(location.getLatitude(), location.getLongitude());
+                        alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                                MainActivity.this.startActivity(intent);
+                            }
+                        });
 
 
-                    }
+                        alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+
+                        alertDialog.show();
+
+
+                    } else
+
+                        setCurrent_location(location.getLatitude(), location.getLongitude());
+
+
                 });
 
 
@@ -325,7 +321,9 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
             diseaseName.setText(model.Object_Detection());
 
             information=null;
-            imageViewHaveImage= !diseaseName.getText().toString().equals(String.valueOf(Prediction.NO_Leaf_Detected)) && !diseaseName.getText().toString().contains("healthy");
+            imageViewHaveImage= !(diseaseName.getText().toString().equals(String.valueOf(Prediction.No_Leaf_Detected))
+                    ||diseaseName.getText().toString().equals(String.valueOf(Prediction.No_Info)))
+                    && !diseaseName.getText().toString().contains("healthy");
 
             binding.upload.performClick();
         }
@@ -350,13 +348,10 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
             case R.id.upload: {
 
                 if(imageViewHaveImage  && information==null){
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            binding.progressBar.setVisibility(View.VISIBLE);
-                            binding.upload.setVisibility(View.GONE);
+                    runOnUiThread(() -> {
+                        binding.progressBar.setVisibility(View.VISIBLE);
+                        binding.upload.setVisibility(View.GONE);
 
-                        }
                     });
                     binding.progressBar.setVisibility(View.VISIBLE);
                     binding.upload.setVisibility(View.GONE);

@@ -55,7 +55,7 @@ public class Ml_Models {
             TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
 
             OBJECT_DETECTION = outputFeature0.getFloatArray()[0] > CONFIDANTE ?
-                    Object_Recognation() : String.valueOf(Prediction.NO_Leaf_Detected);
+                    Object_Recognation() : String.valueOf(Prediction.No_Leaf_Detected);
 
         } catch (Exception e) {
              Log.d(TAG, e.getMessage());
@@ -107,7 +107,7 @@ public class Ml_Models {
                         .max(Comparator.comparing(Category::getScore)).orElse(null);
             }
 
-            Disease = (null == category ? "Leaf isn't Detected" : category.getLabel() + " : " + (int)(category.getScore() * 100)+"%");
+            Disease = (null == category ? Prediction.No_Info.toString() : category.getLabel() + " : " + (int)(category.getScore() * 100)+"%");
 
 
         } catch (Exception e) {

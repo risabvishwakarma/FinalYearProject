@@ -29,7 +29,7 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 public class SignIn extends AppCompatActivity {
 
-    static GoogleSignInClient mGoogleSignInClient;
+     GoogleSignInClient mGoogleSignInClient;
     int RC_SIGN_IN = 110;
     ImageView ProfileImage;
     TextView Name, Gmail;
@@ -50,8 +50,8 @@ public class SignIn extends AppCompatActivity {
         //  logout=findViewById(R.id.Logout);
         gsignin = findViewById(R.id.GoogleSignIn);
         actionBar = getSupportActionBar();
-        assert actionBar != null;
-        actionBar.hide();
+//        assert actionBar != null;
+//        actionBar.hide();
 
         GoogleSignInOptions gso = new GoogleSignInOptions
                 .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
